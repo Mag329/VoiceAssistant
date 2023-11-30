@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменение устройства{% endblock %}
+
+{% block body %}
+<form method="post" class="container pt-4 my-emd-5 pt-md-5 border-top">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" name="key" id="key" placeholder="Название" value="{{ command.name }}">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" name="value" id="value" placeholder="Ссылка" value="{{ command.command }}">
+        </div>
+        <div class="col">
+            <input type="submit" class="btn btn-success", value="Изменить">
+        </div>
+    </div>
+</form>
+{% endblock %}
