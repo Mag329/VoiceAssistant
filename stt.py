@@ -7,7 +7,7 @@ import json
 
 model = vosk.Model("model_small")
 samplerate = 16000
-device = 1
+device = "hw:2,0"
 
 q = queue.Queue()
 
