@@ -7,6 +7,11 @@ import requests
 
 import logging
 
+import sys
+
+sys.path.append(r'../')
+import config
+
 
 
 app = Flask(__name__)
@@ -115,7 +120,7 @@ def device_edit(id):
             db.session.commit()
             return redirect(f'/device/{id}')
         except:
-            return "При изменении статьи произошла ошибка"
+            return "При изменении устройства произошла ошибка"
     else:
         return render_template('device_edit.html', device=device)
     
@@ -179,7 +184,50 @@ def device_delete(id):
         return "При удалении устройства произошла ошибка"
     
         
+@app.route('/device/<int:id>/use', methods=['GET', 'POST'])
+def device_use(id):
+    name = Devices.query.get(id).name
+    commands = Commands.query.filter_by(device_id=id).all()
+    if request.method == 'POST':
+        for data in request.form:
+            if '/' in data:
+                data = data.split('----')
+                command = data[0]
+                device_id = data[1]
+                ip = Devices.query.filter_by(id=device_id).first().ip
+                requests.get(f'http://{ip}{command}')
+
+        
+        return render_template('use.html', commands=commands, name=name)
+    else:
+        return render_template('use.html', commands=commands, name=name)
     
+    
+
+
+        
+@app.route('/settings', methods=['GET', 'POST'])
+def settings_page():
+    settings = {}
+    for key, value in config.__dict__.items():
+        if not key.startswith('__'):
+            settings[key] = value
+            
+    if request.method == 'POST':
+        key_new = request.form['key']
+        value_new = request.form['value']
+        
+        print(key_new)
+        print(value_new)
+        
+        config.__dict__[key_new] = value_new
+    
+    else:
+        return render_template('settings.html', settings=settings)    
+    
+
+   
+   
     
 @app.before_request 
 def handle_request():
@@ -214,7 +262,7 @@ def handle_request():
         else:
             return "'Password' not found", 403
     
-        url = f"http://{device.ip}:5000/{route}"
+        url = f"http://{device.ip}/{route}"
         requests.get(url)
         return 'Well'
     else:
