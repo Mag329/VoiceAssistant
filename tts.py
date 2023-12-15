@@ -10,7 +10,6 @@ speaker = 'baya' # aidar, baya, kseniya, xenia, random
 put_accent = True
 put_yoo = True
 device = torch.device('cpu')
-text = 'Привет это голосовой ассистент Алиса с поддержкой'
 
 model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
                           model='silero_tts',
@@ -21,6 +20,7 @@ model.to(device)
 
 # Text to Speech
 def va_speak(what: str):
+    what += ' .....'
     audio = model.apply_tts(text=what,
                         speaker=speaker,
                         sample_rate=sample_rate,
