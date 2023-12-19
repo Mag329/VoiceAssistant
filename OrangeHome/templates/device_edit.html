@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменение устройства{% endblock %}
+
+{% block body %}
+<form method="post" class="container pt-4 my-emd-5 pt-md-5 border-top">
+    <input type="text" name="name" id="title" class="form-control" placeholder="Название" value="{{ device.name }}"><br>
+    <input type="text" name="room" id="room" class="form-control" placeholder="Комната" value="{{ device.room }}"><br>
+    <input type="text" name="ip" id="ip" class="form-control" placeholder="IP Адрес" value="{{ device.ip }}"><br>
+    <input type="submit" class="btn btn-success", value="Изменить"><br>
+</form>
+{% endblock %}

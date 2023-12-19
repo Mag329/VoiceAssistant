@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Логин{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <form method="post" class="shadow p-3 mb-5 bg-body rounded form">
+        <input type="text" class="form-control" name="login" placeholder="Логин"><br>
+        <input type="password" class="form-control" name="password" placeholder="Пароль"><br>
+        <input type="submit" class="btn btn-success" value="Войти">
+    </form>
+</div>
+{% endblock %}
