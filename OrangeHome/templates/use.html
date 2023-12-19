@@ -14,3 +14,19 @@
     </form>
 </div>
 {% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <form method="post" class="shadow p-3 mb-5 bg-body rounded form">
+        <h2>{{ name }}</h2>
+
+        {% for command in commands %}
+            <input type="submit" class="btn btn-primary" name="{{ command.command }}----{{ command.device_id }}" value="{{ command.name }}"><br><br>
+        {% endfor %}
+    </form>
+</div>
+{% endblock %}
