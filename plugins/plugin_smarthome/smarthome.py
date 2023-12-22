@@ -1,6 +1,8 @@
 import pymorphy3
 import requests
 
+import sys
+sys.path.append(r'../../')
 import tts
 from OrangeHome.app import Devices, Commands
 

@@ -26,31 +26,3 @@
     {% endif %}
 </div>
 {% endblock %}
-{% extends 'base.html' %}
-
-{% block title %}Устройства{% endblock %}
-
-{% block body %}
-<div style="margin-top:20px; margin-bottom:20px; position:relative; float:right; margin-right:60px">
-    <a class="btn btn-primary" href="/device_add/">Добавить устройство</a>
-</div>
-
-<div class="container mt-5">
-    {% if devices|length > 0 %}
-        {% for el in devices %}
-        <div class="shadow p-3 mb-5 bg-body rounded">
-            <h2>{{ el.name }}</h2>
-            <p>{{ el.room }}</p>
-            {% set device_commands = commands | selectattr("device_id", "equalto", el.id) %}
-  
-            {% for command in device_commands %}
-              <p>{{ command.name }} — {{ command.command }}</p>  
-            {% endfor %}
-            <a href="/device/{{ el.id }}" class="btn btn-primary">Подробнее</a>
-        </div>
-        {% endfor %}
-    {% else %}
-    <h3>У Вас еще нет устройств</h3>
-    {% endif %}
-</div>
-{% endblock %}

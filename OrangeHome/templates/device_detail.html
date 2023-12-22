@@ -32,37 +32,5 @@
     </div>
 </div>
 {% endblock %}
-{% extends 'base.html' %}
 
-{% block title %}{{ device.name }}{% endblock %}
 
-{% block body %}
-<div style="margin-top:20px; margin-bottom:20px; position:relative; float:right; margin-right:60px">
-    <a class="btn btn-primary" href="/device_add/">Добавить устройство</a>
-</div>
-
-<div class="container mt-5">
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <h2>{{ device.name }}</h2>
-        <p>{{ device.room }}</p>
-
-        {% for command in commands %}
-            <div class="row" >
-                <div class="col-1" style="width: 140px;">
-                    <p>{{ command.name }} — {{ command.command }}</p>
-                </div>
-                <div class="col-1">
-                    <a href="/device/{{ device.id }}/{{ command.id }}/command_edit" class="btn btn-sm btn-success">Изменить</a>
-                </div>
-                <div class="col-1">
-                    <a href="/device/{{ device.id }}/{{ command.id }}/command_delete" class="btn btn-sm btn-danger">Удалить</a>
-                </div>
-            </div>
-        {% endfor %}<br>
-        <a href="/device/{{ device.id }}/edit" class="btn btn-success">Изменить</a>
-        <a href="/device/{{ device.id }}/delete" class="btn btn-danger">Удалить</a>
-        <a href="/device/{{ device.id }}/command_add" class="btn btn-primary">Добавить команду</a>
-        <a href="/device/{{ device.id }}/use" class="btn btn-dark">Управление</a>
-    </div>
-</div>
-{% endblock %}
