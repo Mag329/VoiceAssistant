@@ -1,3 +1,3 @@
-api_key = "4af30c602f27cbcf2b342fafd86dfe60"
+api_key = "SECRET"
 
 base_city = 'москва'
