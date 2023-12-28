@@ -1,21 +1,14 @@
-import torch
+from RUTTS import TTS
 import sounddevice as sd
-import time
+from ruaccent import RUAccent
 
 
-language = 'ru'
-model_id = 'ru_v3'
-sample_rate = 48000
-speaker = 'xenia' # aidar, baya, kseniya, xenia, random
-put_accent = True
-put_yoo = True
-device = torch.device('cpu')
+model = 'TeraTTS/natasha-g2p-vits'
 
-model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
-                          model='silero_tts',
-                          language=language,
-                          speaker=model_id)
-model.to(device)
+tts = TTS(model, add_time_to_end=0.8) 
+
+accentizer = RUAccent()
+accentizer.load(omograph_model_size='big_poetry', use_dictionary=True)
 
 
 # Text to Speech
@@ -29,16 +22,13 @@ def va_speak(what: str):
         ### Return:
         - None
     '''
-    what += ' .....'
-    if 'кого-' in what:
-        what = what.replace('кого-', 'ково-')
-    audio = model.apply_tts(text=what,
-                        speaker=speaker,
-                        sample_rate=sample_rate,
-                        put_accent=put_accent,
-                        put_yo=put_yoo)
-    sd.play(audio, sample_rate)
-    time.sleep(len(audio) / sample_rate + 1)
-    sd.stop()
+    # what += '...'
+
+    what = accentizer.process_all(what)
+    print(what)
+    
+    audio = tts(what, lenght_scale=0.8)
+    tts.play_audio(audio)
+    # sd.play(audio, 24000, blocking=True)
     
 

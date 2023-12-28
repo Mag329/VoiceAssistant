@@ -40,19 +40,19 @@ def main(cmd, phrase:str):
 
     # ставим секунды?
     for i in range(100,1,-1):
-        txt = num2words(i, lang='ru') + " "
+        txt = num2words(i, lang='ru') + " " + "секунд "
         if phrase.startswith(txt):
             #print(txt)
             set_timer_real(i)
             return
 
-        txt2 = num2words(i, lang='ru') + " "
+        txt2 = num2words(i, lang='ru') + " " + "секунды "
         if phrase.startswith(txt2):
             #print(txt,txt2)
             set_timer_real(i)
             return
 
-        txt3 = str(i) + " секунд "
+        txt3 = str(i) + " секунд " 
         if phrase.startswith(txt3):
             #print(txt,txt2)
             set_timer_real(i)
@@ -60,12 +60,13 @@ def main(cmd, phrase:str):
 
     # ставим минуты?
     for i in range(100,1,-1):
-        txt = num2words(i, lang='ru') + " "
+        txt = num2words(i, lang='ru') + " " + "минуты "
+        print(txt)
         if phrase.startswith(txt):
             set_timer_real(i*60)
             return
 
-        txt2 = num2words(i, lang='ru') + " "
+        txt2 = num2words(i, lang='ru') + " " + "минут "
         if phrase.startswith(txt2):
             set_timer_real(i*60)
             return

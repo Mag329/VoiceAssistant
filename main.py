@@ -11,7 +11,7 @@ import asyncio
 from threading import Timer
 
 from OrangeHome import app
-import plugins.plugin_telegram.main
+# from plugins.plugin_telegram import main
 import plugins
 
 
@@ -25,33 +25,35 @@ def va_respond(voice):
 
 async def va_respond_async(voice: str):
     voice = input()
-    if voice.startswith(config.VA_ALIAS) or config.is_active == True:
-        # print(voice)
-        voice = filter_cmd(voice)
-        cmd = recognize_cmd(voice)
-        
-        if config.use_plugin != None:
-            execute_cmd(config.use_plugin, voice, 'dialog')
-        
-        else:
-            if cmd['cmd'] not in config.VA_CMD_LIST.keys():
-                tts.va_speak('Я вас не понимаю')
-                
-                # spec = importlib.util.spec_from_file_location('main', (os.path.join(f'plugins/plugin_gpt/main.py')))
-                # plugin = importlib.util.module_from_spec(spec)
-                
-                # sys.modules['plugin_gpt'] = plugin
-                # spec.loader.exec_module(plugin)
-                
-                # plugin.main(cmd, voice)
+    if voice != None:
+        if voice.startswith(config.VA_ALIAS):
+            # print(voice)
+            voice = filter_cmd(voice)
+            cmd = recognize_cmd(voice)
+            
+            if config.use_plugin != None:
+                execute_cmd(config.use_plugin, voice, 'dialog')
+            
             else:
-                print(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
-                execute_cmd(cmd['cmd'], voice)
-                
-                config.is_active = True
-                print(config.is_active)
-                loop = asyncio.new_event_loop()
-                Timer(30, loop.run_until_complete, (is_active_off(),)).start()
+                if cmd['cmd'] not in config.VA_CMD_LIST.keys():
+                    tts.va_speak('Я вас не понимаю')
+                    
+                    # spec = importlib.util.spec_from_file_location('main', (os.path.join(f'plugins/plugin_gpt/main.py')))
+                    # plugin = importlib.util.module_from_spec(spec)
+                    
+                    # sys.modules['plugin_gpt'] = plugin
+                    # spec.loader.exec_module(plugin)
+                    
+                    # plugin.main(cmd, voice)
+                else:
+                    print(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
+                    execute_cmd(cmd['cmd'], voice)
+                    
+                    # config.is_active = True
+                    # print(config.is_active)
+                    # loop = asyncio.new_event_loop()
+                    # Timer(30, loop.run_until_complete, (is_active_off(),)).start()
+
 
 
 
@@ -140,5 +142,5 @@ def execute_cmd(cmd: str, text, func='main'):
     
     
     
-
+# main.start
 stt.va_listen(va_respond)

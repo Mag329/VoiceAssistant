@@ -18,6 +18,9 @@
                     <p>{{ command.name }} — {{ command.command }}</p>
                 </div>
                 <div class="col-1">
+                    <p>{{ command.cmd_type }}</p>
+                </div>
+                <div class="col-1">
                     <a href="/device/{{ device.id }}/{{ command.id }}/command_edit" class="btn btn-sm btn-success">Изменить</a>
                 </div>
                 <div class="col-1">

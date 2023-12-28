@@ -16,5 +16,6 @@ def main(cmd, text):
     
     minute_word = morph.parse('минута')[0]
     minute_word = minute_word.make_agree_with_number(now.minute).word
+    minute_word = minute_word.replace('минут', 'мин+ут')
     text = f"Сейч+ас {num2words(now.hour, lang='ru')} {hour_word}, {num2words(now.minute, lang='ru')} {minute_word}"
     tts.va_speak(text)

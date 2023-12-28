@@ -17,18 +17,19 @@ def main(cmd, text):
 
 def dialog(cmd, text):
     question = text.replace('придумай ', '')
-    
-    if question == 'хватит':
+    if question == 'хватит ':
         history.history = []
         config.use_plugin = None
         return
     
     else:
-        history.history.append({"role": "user", "content": question})
-        print(history.history)
-        response = ask(history.history)
-        history.history.append({"role": "assistant", "content": response})
-        print(response)
+        try:
+            history.history.append({"role": "user", "content": question})
+            response = ask(history.history)
+            history.history.append({"role": "assistant", "content": response})
+            print(response)
+        except:
+            response = "Ошибка генерации ответа"
         tts.va_speak(response)
     
 

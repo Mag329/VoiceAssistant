@@ -4,10 +4,11 @@ from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 
 import sys
+import json
 
 sys.path.append(r'../')
-from plugin_smarthome.smarthome import *
-from plugin_telegram.models import *
+from plugins.plugin_smarthome.smarthome import *
+from plugins.plugin_telegram.models import *
 
 
 router = Router()
@@ -81,12 +82,19 @@ async def choice_command_handler(message: Message, state: FSMContext):
     except:
         await message.answer('Не удалось подключиться к устройству')
         
-    
-        
     await state.clear()
 
     
-    
-    
+@router.message(Command("shoplist"))
+async def shoplist_handler(message: Message):
+    print('shoplist')
+    with open('plugins/plugin_shoplist/list.json', encoding='utf8') as load_file:
+        data = json.load(load_file)
+        
+        list = 'Список покупок:\n'
+        for i in data['list']:
+            lest += f'{i}. {i["name"]}, {i["amount"]}\n'
+     
+    await message.answer(list)
     
     

@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']  = '1aNCVs'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_ECHO'] = True
 app.app_context().push()
 
 db = SQLAlchemy(app)
@@ -44,7 +44,7 @@ class Commands(db.Model):
     name = db.Column(db.String(100), nullable=False)
     command = db.Column(db.Text, nullable=False)
     device_id = db.Column(db.Integer, db.ForeignKey('devices.id'))
-    type = db.Column(db.String(100), nullable=False)
+    cmd_type = db.Column(db.String(100), nullable=False)
     
     
 class Room(db.Model):
@@ -159,9 +159,9 @@ def command_add(id):
     if request.method == 'POST':
         key = request.form['key']
         value = request.form['value']
-        type = request.form['type']
+        cmd_type = request.form['type']
 
-        command = Commands(name=key, command=value, device_id=id, type=type)
+        command = Commands(name=key, command=value, device_id=id, cmd_type=cmd_type)
         
         try:
             db.session.add(command)
@@ -180,7 +180,7 @@ def command_edit(id, command_id):
     if request.method == 'POST':
         command.name = request.form['key']
         command.command = request.form['value']
-        command.type = request.form['type']
+        command.cmd_type = request.form['type']
         
         try:
             db.session.commit()
@@ -229,11 +229,17 @@ def device_use(id):
                 command = data[0]
                 device_id = data[1]
                 ip = Devices.query.filter_by(id=device_id).first().ip
-                requests.get(f'http://{ip}{command}')
-
+                try:
+                    response = requests.get(f'http://{ip}{command}')
+                    # response = response.content
+                    # response = response.replace("b", "")
+                    # response = response.replace("'", "")
+                except:
+                    response.content = 'Ошибка запроса'
         
-        return render_template('use.html', commands=commands, name=name)
+        return render_template('use.html', commands=commands, name=name, response=response.content)
     else:
+        print('get')
         return render_template('use.html', commands=commands, name=name)
     
     
@@ -283,7 +289,7 @@ def login_page():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def register_page():
     if request.method == 'POST':
         username = request.form['login']

@@ -35,6 +35,7 @@ def recognize_appliance(text: str):
     name = text.split()[1]
     name = morph.parse(name)[0]
     name = name.normal_form
+    print(name)
     
     if name in commands_name:
         command = text.split()[1]
@@ -83,7 +84,7 @@ def work_with_device(appliance: str, cmd: str, host: str):
                 for command in commands:
                     if command.name.lower() == cmd and command.device_id == device.id:
                         name = morph.parse(cmd)[0]
-                        name = str(name.inflect({'accs'}).word)
+                        name = str(name.inflect({'accs'}))
                         tts.va_speak('Включаю ' + name)
                         try:
                             print(f'http://{host}{command.command}')
