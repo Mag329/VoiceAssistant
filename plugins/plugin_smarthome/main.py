@@ -28,7 +28,6 @@ def main(cmd, text):
         host = appliance['host']
         host = morph.parse(host)[0]
         host = host.normal_form
-        command = appliance['command']
         device = appliance['device']
         
         devices_db = Devices.query.filter().all()
