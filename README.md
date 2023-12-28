@@ -37,6 +37,6 @@ python3 main.py
 ![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge)  
 ![Flask](https://img.shields.io/badge/Flask-lightgray?style=for-the-badge)  
 ![Vosk](https://img.shields.io/badge/Vosk-green?style=for-the-badge)  
-![Silero](https://img.shields.io/badge/Silero-DD0031?style=for-the-badge)  
+![Silero](https://img.shields.io/badge/RUTTS-DD0031?style=for-the-badge)  
 ![HTML](https://img.shields.io/badge/HTML-orange?style=for-the-badge)  
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge)
