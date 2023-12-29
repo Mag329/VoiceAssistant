@@ -5,6 +5,7 @@ import json
 import config
 
 from additions import *
+import plugins 
 
 
 model = 'TeraTTS/natasha-g2p-vits'
@@ -17,12 +18,6 @@ accentizer.load(omograph_model_size='big_poetry', use_dictionary=True)
 with open('config.json') as file:
     data = json.load(file)
     volume = data['main']['volume']
-
-
-# def va_speak(what: str):
-#     va_speak_async(what)
-#     # asyncio.to_thread(va_speak_async(what))
-#     # fix async func run from sync func
     
 
 # Text to Speech
@@ -30,7 +25,6 @@ def va_speak(what: str):
     what = ' ' + what + ' ..'
 
     what = accentizer.process_all(what)
-    print_text(what)
     
     audio = tts(what, lenght_scale=1.6)
     # tts.play_audio(audio)
@@ -40,6 +34,8 @@ def va_speak(what: str):
 
 def set_volume(new_volume: int):
     global volume
+    if config.use_plugin == 'radio':
+        plugins.plugin_radio.main.set_volume(new_volume)
     volume = new_volume
     with open('config.json') as load_file:
         data = json.load(load_file)
