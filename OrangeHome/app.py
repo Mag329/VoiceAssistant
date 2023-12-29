@@ -239,7 +239,6 @@ def device_use(id):
         
         return render_template('use.html', commands=commands, name=name, response=response.content)
     else:
-        print('get')
         return render_template('use.html', commands=commands, name=name)
     
     

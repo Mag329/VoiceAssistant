@@ -4,6 +4,7 @@ import requests
 import sys
 sys.path.append(r'../../')
 import tts
+from additions import *
 from OrangeHome.app import Devices, Commands
 
 
@@ -35,7 +36,7 @@ def recognize_appliance(text: str):
     name = text.split()[1]
     name = morph.parse(name)[0]
     name = name.normal_form
-    print(name)
+    print_text(name)
     
     if name in commands_name:
         command = text.split()[1]
@@ -87,7 +88,7 @@ def work_with_device(appliance: str, cmd: str, host: str):
                         name = str(name.inflect({'accs'}))
                         tts.va_speak('Включаю ' + name)
                         try:
-                            print(f'http://{host}{command.command}')
+                            print_text(f'http://{host}{command.command}')
                             requests.get(f'http://{host}{command.command}')
                         except:
                             tts.va_speak("Не удалось подключиться к устройству")
