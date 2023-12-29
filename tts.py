@@ -2,7 +2,7 @@ from RUTTS import TTS
 import sounddevice as sd
 from ruaccent import RUAccent
 import json
-import asyncio
+import config
 
 
 model = 'TeraTTS/natasha-g2p-vits'
@@ -25,7 +25,7 @@ with open('config.json') as file:
 
 # Text to Speech
 def va_speak(what: str):
-    what += '..'
+    what = '. ' + what + ' ..'
 
     what = accentizer.process_all(what)
     print(what)
@@ -33,7 +33,7 @@ def va_speak(what: str):
     audio = tts(what, lenght_scale=1.6)
     # tts.play_audio(audio)
     audio = audio * volume
-    sd.play(audio, 24000)
+    config.player = sd.play(audio, 24000)
     
 
 def set_volume(new_volume: int):

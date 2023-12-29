@@ -57,7 +57,7 @@ def main(cmd, text):
         metres = morph.parse('метр')[0]
         metres = metres.make_agree_with_number(wind).word
         
-        text = f"Сейчас в {city} {num2words(int(cur_temp), lang='ru')} {weather} влажность {num2words(humidity, lang='ru')} {word} давление {num2words(int(pressure), lang='ru')} {mm} ртутного столба ветер {num2words(wind, lang='ru')} {metres} в секунду"
+        text = f"Сейчас в {city} {num2words(int(cur_temp), lang='ru')} {weather}, влажность {num2words(humidity, lang='ru')} {word}, давление {num2words(int(pressure), lang='ru')} {mm} ртутного столба, ветер {num2words(wind, lang='ru')} {metres} в секунду"
         
         tts.va_speak(text)
         
