@@ -37,7 +37,7 @@ flatbuffers==23.5.26
 frozenlist==1.4.1
 fsspec==2023.12.2
 fuzzywuzzy==0.18.0
-g4f==0.1.9.3
+g4f==0.1.9.7
 greenlet==3.0.2
 gruut==2.3.4
 gruut-ipa==0.13.0

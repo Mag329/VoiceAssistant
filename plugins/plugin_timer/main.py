@@ -61,7 +61,6 @@ def main(cmd, phrase:str):
     # ставим минуты?
     for i in range(100,1,-1):
         txt = num2words(i, lang='ru') + " " + "минуты "
-        print(txt)
         if phrase.startswith(txt):
             set_timer_real(i*60)
             return
@@ -94,10 +93,12 @@ def main(cmd, phrase:str):
     # спецкейс под одну минуту
     if phrase.startswith("один ") or phrase.startswith("одна ") or phrase.startswith("одну "):
         set_timer_real(1*60)
-        print('timer 1 minute')
+        return
+    
+    if phrase.startswith("две "):
+        set_timer_real(2*60)
         return
 
-    # непонятно, но сохраняем контекст и переспрашиваем время
 
 def set_timer_real(num:int):
     tts.va_speak(f"время пошло")

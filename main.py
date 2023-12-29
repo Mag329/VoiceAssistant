@@ -35,7 +35,7 @@ async def va_respond_async(voice: str):
                 execute_cmd(config.use_plugin, voice, 'dialog')
             
             else:
-                if cmd['cmd'] not in config.VA_CMD_LIST.keys():
+                if cmd['cmd'] not in config.VA_CMD_LIST.keys() or cmd['percent'] < 50:
                     tts.va_speak('Я вас не понимаю')
                     
                     # spec = importlib.util.spec_from_file_location('main', (os.path.join(f'plugins/plugin_gpt/main.py')))
@@ -46,8 +46,11 @@ async def va_respond_async(voice: str):
                     
                     # plugin.main(cmd, voice)
                 else:
-                    print(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
-                    execute_cmd(cmd['cmd'], voice)
+                    try:
+                        print(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
+                        execute_cmd(cmd['cmd'], voice)
+                    except:
+                        tts.va_speak('ошибка навыка')
                     
                     # config.is_active = True
                     # print(config.is_active)
