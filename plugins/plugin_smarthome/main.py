@@ -1,6 +1,7 @@
 import sys
 sys.path.append(r'../')
 from plugins.plugin_smarthome.smarthome import *
+from additions import *
 
 import pymorphy3
 
@@ -18,7 +19,7 @@ def main(cmd, text):
         for device_db in devices_db:
             if device_db.name.lower() == appliance:
                 ip = device_db.ip
-                print(appliance, cmd, ip)
+                print_text(appliance, cmd, ip)
                 work_with_device(appliance, cmd, ip)
             else:
                 continue
@@ -34,7 +35,7 @@ def main(cmd, text):
         for device_db in devices_db:
             if device_db.name.lower() == host:
                 ip = device_db.ip
-                print(host, device, ip)
+                print_text(host, device, ip)
                 work_with_device(host, device, ip)
             else:
                 continue

@@ -4,6 +4,8 @@ from ruaccent import RUAccent
 import json
 import config
 
+from additions import *
+
 
 model = 'TeraTTS/natasha-g2p-vits'
 
@@ -25,10 +27,10 @@ with open('config.json') as file:
 
 # Text to Speech
 def va_speak(what: str):
-    what = '. ' + what + ' ..'
+    what = ' ' + what + ' ..'
 
     what = accentizer.process_all(what)
-    print(what)
+    print_text(what)
     
     audio = tts(what, lenght_scale=1.6)
     # tts.play_audio(audio)
@@ -44,4 +46,4 @@ def set_volume(new_volume: int):
         data['main']['volume'] = volume
         with open('config.json', 'w') as file:
             json.dump(data, file)
-    print(volume)
+    print_text(volume)

@@ -4,6 +4,7 @@ import sys
 sys.path.append(r'../')
 import tts
 import config
+from additions import *
 
 from num2words import num2words
 import pymorphy3
@@ -56,19 +57,19 @@ def main(cmd, text):
     #                 continue
     #             else:
     #                 product += f'{word} '
-    #         print(product)
+    #         print_text(product)
     #         # if product + ' ' in load_data['list']:
     #         try:
     #             load_data['list'][product].pop("name")
     #             load_data['list'][product].pop("amount")
-    #             print(load_data)
+    #             print_text(load_data)
     #         except:
     #             tts.va_speak(f'Не найдено')
     #             return
         
     #         tts.va_speak(f'{text}, удалено')
         
-    #         print(load_data)
+    #         print_text(load_data)
     #         with open('plugins/plugin_shoplist/list.json', 'w', encoding='utf8') as file:
     #             json.dump(load_data, file, ensure_ascii=False, indent=2)
         
@@ -97,7 +98,7 @@ def dialog(cmd, text):
         load_data = json.load(load_file)
         load_data['list'].append(data)
     
-        print(load_data)
+        print_text(load_data)
         with open('plugins/plugin_shoplist/list.json', 'w', encoding='utf8') as file:
             json.dump(load_data, file, ensure_ascii=False, indent=2)
     

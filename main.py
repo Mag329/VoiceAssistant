@@ -13,6 +13,7 @@ from threading import Timer
 from OrangeHome import app
 # from plugins.plugin_telegram import main
 import plugins
+from additions import *
 
 
 morph = pymorphy3.MorphAnalyzer(lang='ru')
@@ -20,7 +21,7 @@ morph = pymorphy3.MorphAnalyzer(lang='ru')
 loop = None
 timer = None
 
-print(f'Ассистент {config.VA_NAME} (v{config.VA_VER}) начал свою работу...')
+print_text(f'Ассистент {config.VA_NAME} (v{config.VA_VER}) начал свою работу...')
 
 def va_respond(voice):
     asyncio.run(va_respond_async(voice))
@@ -37,7 +38,7 @@ async def va_respond_async(voice: str):
                 execute_cmd(config.use_plugin, voice, 'dialog')
             
             else:
-                if cmd['cmd'] not in config.VA_CMD_LIST.keys() or cmd['percent'] < 50 and not config.is_active:
+                if cmd['cmd'] not in config.functions_list.keys() or cmd['percent'] < 50 and not config.is_active:
                     if config.player == None:
                         tts.va_speak('Я вас не понимаю')
                     else:
@@ -58,7 +59,7 @@ async def va_respond_async(voice: str):
                         if cmd['cmd'] == 'stop':
                             return
                         
-                    print(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
+                    print_text(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
                     execute_cmd(cmd['cmd'], voice)
                     
                     global timer
@@ -72,7 +73,7 @@ async def va_respond_async(voice: str):
                         loop = None
                     
                     config.is_active = True
-                    print(config.is_active)
+                    print_text(config.is_active)
                     loop = asyncio.new_event_loop()
                     timer = Timer(15, loop.run_until_complete, (is_active_off(),))
                     timer.start()
@@ -85,33 +86,8 @@ async def va_respond_async(voice: str):
 async def is_active_off():
     # time.sleep(30)
     config.is_active = False
-    print(config.is_active)
+    print_text(config.is_active)
 
-
-# def filter_cmd(raw_voice: str):
-#     cmd = raw_voice
-    
-#     for x in config.VA_ALIAS:
-#         cmd = cmd.replace(x, '').strip()
-        
-#     for x in config.VA_TBR:
-#         cmd = cmd.replace(x, '').strip()
-        
-#     print(cmd)
-#     return cmd
-
-
-# def filter_cmd(raw_voice: str):
-#     cmd = raw_voice
-    
-#     for alias in config.VA_ALIAS:
-#         cmd = re.sub(rf"\b{alias}\b", "", cmd)  
-
-#     for x in config.VA_TBR:
-#         cmd = re.sub(rf"\b{x}\b", "", cmd)
-    
-#     print(cmd.strip())
-#     return cmd.strip()
 
 def filter_cmd(raw_voice: str):
     cmd = raw_voice.split()
@@ -124,14 +100,14 @@ def filter_cmd(raw_voice: str):
         else:
             filtered_cmd += f'{word} '
     
-    print(filtered_cmd)
+    print_text(filtered_cmd)
     return filtered_cmd
     
 
 def recognize_cmd(cmd: str):
     rc = {'cmd': '', 'percent': 0}
     for cmd in cmd.split():
-        for c, v in config.VA_CMD_LIST.items():
+        for c, v in config.functions_list.items():
             for x in v:
                 vrt = fuzz.ratio(cmd, x)
                 if vrt > rc['percent']:
@@ -142,13 +118,11 @@ def recognize_cmd(cmd: str):
 
 
 def execute_cmd(cmd: str, text, func='main'):
-    functions = config.VA_CMD_FUNCS
-    
-    plugin_name = 'plugin_' + functions[cmd]
+    plugin_name = 'plugin_' + cmd
     plugin_path = os.path.join(f'plugins/{plugin_name}/main.py')
     
     if not os.path.exists(plugin_path):
-        print(f'Plugin {plugin_name} not found')
+        print_text(f'Plugin {plugin_name} not found')
         return
     
     spec = importlib.util.spec_from_file_location('main', plugin_path)
@@ -165,5 +139,20 @@ def execute_cmd(cmd: str, text, func='main'):
     
     
     
-# main.start
+# Загрузка плагинов
+plugins = []
+for name in os.listdir('plugins/'):
+    if name.startswith('plugin_'):
+        plugins.append(name)
+        
+for plugin in plugins:
+    name = plugin.replace('plugin_', '')
+    if not os.path.exists(f'plugins/{plugin}/commands.py'):
+        print_error(f'CMD_NAMES not found in plugin {name} ')
+        continue
+    commands_module = importlib.import_module(f'plugins.{plugin}.commands')
+   
+    config.functions_list[name] = commands_module.CMD_NAMES
+   
+
 stt.va_listen(va_respond)
