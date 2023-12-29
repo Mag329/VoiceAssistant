@@ -122,7 +122,7 @@ def execute_cmd(cmd: str, text, func='main'):
     plugin_path = os.path.join(f'plugins/{plugin_name}/main.py')
     
     if not os.path.exists(plugin_path):
-        print_text(f'Plugin {plugin_name} not found')
+        print_error(f'Plugin {plugin_name} not found')
         return
     
     spec = importlib.util.spec_from_file_location('main', plugin_path)
@@ -140,19 +140,31 @@ def execute_cmd(cmd: str, text, func='main'):
     
     
 # Загрузка плагинов
-plugins = []
-for name in os.listdir('plugins/'):
-    if name.startswith('plugin_'):
-        plugins.append(name)
+def load_plugins():
+    plugins = []
+    for name in os.listdir('plugins/'):
+        if name.startswith('plugin_'):
+            plugins.append(name)
+            
+    for plugin in plugins:
+        name = plugin.replace('plugin_', '')
         
-for plugin in plugins:
-    name = plugin.replace('plugin_', '')
-    if not os.path.exists(f'plugins/{plugin}/commands.py'):
-        print_error(f'CMD_NAMES not found in plugin {name} ')
-        continue
-    commands_module = importlib.import_module(f'plugins.{plugin}.commands')
+        if not os.path.exists(f'plugins/{plugin}/info.py'):
+            print_error(f'CMD_NAMES not found in plugin {name} ')
+            continue
+        commands_module = importlib.import_module(f'plugins.{plugin}.info')
+    
+        config.functions_list[name] = commands_module.CMD_NAMES
+        name = name[0].upper() + name[1:]
+        print_text(f'Successfully load plugin [bold]{name}[/bold]')
+        print_multiline_text(f"""
+            Name: [bold yellow]{name}[/bold yellow]
+            - Author: [cyan]{commands_module.author}[/cyan]
+            - Version: {commands_module.version}
+            - Online: {commands_module.request_online}
+            - Dialog: {commands_module.dialog}
+            - Description: {commands_module.description}
+        """)
    
-    config.functions_list[name] = commands_module.CMD_NAMES
-   
-
+load_plugins()
 stt.va_listen(va_respond)

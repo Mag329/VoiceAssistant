@@ -23,7 +23,6 @@ def main(cmd, text):
     text += ' текст текст текст'
     new_text = text
     text = text.split()
-    print_text(text)
     if text[2] != 'текст':
         city = text[2]
     else:
