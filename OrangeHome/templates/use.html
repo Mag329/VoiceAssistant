@@ -5,18 +5,25 @@
 {% block body %}
 
 <div class="container mt-5">
-    <form method="post" class="shadow p-3 mb-5 bg-body rounded form row">
+   
         <div class="row">
         <h2>{{ name }}</h2>
             <div class="col">
                 {% for command in commands %}
-                    <input type="submit" class="btn btn-primary" name="{{ command.command }}----{{ command.device_id }}" value="{{ command.name }}"><br><br>
+                <div class="shadow p-3 mb-5 bg-body rounded form row">
+                    <form method="post" class="col">
+                        <input type="submit" class="btn btn-primary col" style="width: 163px;" name="{{ command.command }}----{{ command.device_id }}" value="{{ command.name }}">
+                    </form>
+                    <form method="post" class="col">
+                            <input type="number" class="form-control col" style="max-width: 163px;"  name="{{ command.command }}||||{{ command.device_id }}" placeholder="Сработает через...">
+                            <input type="submit" class="btn btn-success col" style="max-width: 163px;" value="Поставить таймер">
+                    </form>
+                </div>
                 {% endfor %}
             </div>
             <div class="col">
                 <p>{{ response }}</p>
             </div>
         </div>
-    </form>
 </div>
 {% endblock %}

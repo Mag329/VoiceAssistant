@@ -44,8 +44,11 @@ def main(cmd, text):
         
         speak = 'Список покупок: '
         for i in data['list']:
-            speak += f'{i["name"]}, {num2words(i["amount"], lang="ru")}'
-        
+            try:
+                speak += f'{i["name"]}, {num2words(i["amount"], lang="ru")}.'
+            except:
+                continue
+            
         tts.va_speak(speak)
         
     # elif text.startswith('удали') or text.startswith('убери'):

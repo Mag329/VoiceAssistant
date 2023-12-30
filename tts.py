@@ -29,7 +29,8 @@ def va_speak(what: str):
     audio = tts(what, lenght_scale=1.6)
     # tts.play_audio(audio)
     audio = audio * volume
-    config.player = sd.play(audio, 24000)
+    config.player = 'Play' 
+    sd.play(audio, 24000)
     
 
 def set_volume(new_volume: int):

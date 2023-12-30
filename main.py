@@ -29,7 +29,7 @@ def va_respond(voice):
 
 async def va_respond_async(voice: str):
     voice = input()
-    if voice != None:
+    if voice != '':
         if voice.startswith(config.VA_ALIAS) or config.is_active:
             voice = filter_cmd(voice)
             cmd = recognize_cmd(voice)
@@ -38,11 +38,11 @@ async def va_respond_async(voice: str):
                 execute_cmd(config.use_plugin, voice, 'dialog')
             
             else:
-                if cmd['cmd'] not in config.functions_list.keys() or cmd['percent'] < 50 and not config.is_active:
-                    if config.player == None:
+                if cmd['cmd'] not in config.functions_list.keys() or cmd['percent'] < 50:   # Странное условие
+                    if config.player == None or voice != '':
                         tts.va_speak('Я вас не понимаю')
                     else:
-                        config.player.stop()
+                        tts.sd.stop()
                         config.player = None
                     
                     # spec = importlib.util.spec_from_file_location('main', (os.path.join(f'plugins/plugin_gpt/main.py')))
@@ -53,30 +53,32 @@ async def va_respond_async(voice: str):
                     
                     # plugin.main(cmd, voice)
                 else:
-                    if config.player != None:
-                        config.player.stop()
-                        config.player = None
-                        if cmd['cmd'] == 'stop':
-                            return
-                        
                     print_text(f"Command: {cmd['cmd']}, Percent: {cmd['percent']}")
+                    if config.player != None:
+                        # config.player.stop()
+                        config.player = None
+                        tts.sd.stop()  
+                        
+                    if cmd['cmd'] == 'stop':
+                        return
+                        
                     execute_cmd(cmd['cmd'], voice)
                     
-                    global timer
-                    global loop
-                    
-                    if timer != None:
-                        timer.cancel()
-                        timer = None
-                    if loop != None:
-                        loop.stop()
-                        loop = None
-                    
-                    config.is_active = True
-                    print_text(config.is_active)
-                    loop = asyncio.new_event_loop()
-                    timer = Timer(15, loop.run_until_complete, (is_active_off(),))
-                    timer.start()
+            global timer
+            global loop
+            
+            if timer != None:
+                timer.cancel()
+                timer = None
+            if loop != None:
+                loop.stop()
+                loop = None
+            
+            config.is_active = True
+            print_text(config.is_active)
+            loop = asyncio.new_event_loop()
+            timer = Timer(15, loop.run_until_complete, (is_active_off(),))
+            timer.start()
 
 
 
@@ -150,21 +152,25 @@ def load_plugins():
         name = plugin.replace('plugin_', '')
         
         if not os.path.exists(f'plugins/{plugin}/info.py'):
-            print_error(f'CMD_NAMES not found in plugin {name} ')
+            print_error(f'[bold]info.py[/bold] not found in plugin {name} ')
             continue
         commands_module = importlib.import_module(f'plugins.{plugin}.info')
-    
-        config.functions_list[name] = commands_module.CMD_NAMES
-        name = name[0].upper() + name[1:]
-        print_text(f'Successfully load plugin [bold]{name}[/bold]')
-        print_multiline_text(f"""
-            Name: [bold yellow]{name}[/bold yellow]
-            - Author: [cyan]{commands_module.author}[/cyan]
-            - Version: {commands_module.version}
-            - Online: {commands_module.request_online}
-            - Dialog: {commands_module.dialog}
-            - Description: {commands_module.description}
-        """)
+        try:
+            config.functions_list[name] = commands_module.CMD_NAMES
+            name = name[0].upper() + name[1:]
+            print_text(f'Successfully load plugin [bold]{name}[/bold]')
+            print_multiline_text(f"""
+                Name: [bold yellow]{name}[/bold yellow]
+                - Author: [cyan]{commands_module.author}[/cyan]
+                - Version: {commands_module.version}
+                - Online: {commands_module.request_online}
+                - Dialog: {commands_module.dialog}
+                - Description: {commands_module.description}
+            """)
+        except:
+            print_error(f'CMD_NAMES not found in plugin {name}')
+            
+    config.functions_list['stop'] = config.VA_BREAK
    
 load_plugins()
 stt.va_listen(va_respond)

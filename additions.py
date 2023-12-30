@@ -4,9 +4,9 @@ import datetime
 
 console = Console()
 
-def print_text(text):
+def print_text(text1, text2='', text3='', text4='', text5=''):
     now = datetime.datetime.now()
-    console.print(f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [green]{text}[/green]')
+    console.print(f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [green]{text1} {text2} {text3} {text4} {text5}[/green]')
 
     
 def print_error(text):

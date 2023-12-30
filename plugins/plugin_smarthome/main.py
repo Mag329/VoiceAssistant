@@ -10,6 +10,13 @@ morph = pymorphy3.MorphAnalyzer(lang='ru')
 
 def main(cmd, text):
     appliance = recognize_appliance(text)
+    
+    for word in text.split():
+        if word in CMD_ON:
+            cmd = 'on'
+        elif word in CMD_OFF:
+            cmd = 'off'
+    
     if appliance['type'] == 'device':
         appliance = appliance['device']
         
