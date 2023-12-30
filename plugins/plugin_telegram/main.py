@@ -6,11 +6,11 @@ from aiogram.fsm.storage.memory import MemoryStorage
 import asyncio
 import logging
 
-from handlers import router
+from plugins.plugin_telegram.handlers import router
 import config
 
 
-async def main():
+async def start():
     bot = Bot(token=config.BOT_TOKEN, parse_mode=ParseMode.HTML)
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
@@ -18,6 +18,6 @@ async def main():
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 
-
-logging.basicConfig(level=logging.INFO)
-asyncio.run(main())
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(start())

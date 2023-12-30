@@ -1,6 +1,7 @@
 import sys
 sys.path.append(r'../')
 import tts
+from additions import *
 
 import requests
 import pymorphy3
@@ -12,11 +13,18 @@ from plugins.plugin_weather.config import api_key, base_city
 morph = pymorphy3.MorphAnalyzer(lang='ru')
 
 def main(cmd, text):
+    TBR = ('в', 'во')
+    new_text = ''
+    for word in text.split():
+            if word in TBR:
+                continue
+            else:
+                new_text += f'{word} '
     text += ' текст текст текст'
-
+    new_text = text
     text = text.split()
-    if text[3] != 'текст':
-        city = text[3]
+    if text[2] != 'текст':
+        city = text[2]
     else:
         city = base_city
         
@@ -46,7 +54,10 @@ def main(cmd, text):
         mm = mm.make_agree_with_number(pressure).word
         mm = mm.replace("миллим", "миллим+")
         
-        text = f"Сейчас в {city} {num2words(int(cur_temp), lang='ru')}, {weather}, влажность {num2words(humidity, lang='ru')} {word}, давление {num2words(int(pressure), lang='ru')} {mm} ртутного столба, ветер {num2words(wind, lang='ru')} метров в секунду"
+        metres = morph.parse('метр')[0]
+        metres = metres.make_agree_with_number(wind).word
+        
+        text = f"Сейчас в {city} {num2words(int(cur_temp), lang='ru')}, {weather}, влажность {num2words(humidity, lang='ru')} {word}, давление {num2words(int(pressure), lang='ru')} {mm} ртутного столба, ветер {num2words(wind, lang='ru')} {metres} в секунду"
         
         tts.va_speak(text)
         

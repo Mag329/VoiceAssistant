@@ -8,6 +8,10 @@ import json
 import requests
 import logging
 import sys
+import asyncio
+from threading import Timer
+from threading import Thread
+import time
 
 sys.path.append(r'../')
 # import config
@@ -19,7 +23,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']  = '1aNCVs'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_ECHO'] = True
 app.app_context().push()
 
 db = SQLAlchemy(app)
@@ -44,7 +48,7 @@ class Commands(db.Model):
     name = db.Column(db.String(100), nullable=False)
     command = db.Column(db.Text, nullable=False)
     device_id = db.Column(db.Integer, db.ForeignKey('devices.id'))
-    type = db.Column(db.String(100), nullable=False)
+    cmd_type = db.Column(db.String(100), nullable=False)
     
     
 class Room(db.Model):
@@ -159,9 +163,9 @@ def command_add(id):
     if request.method == 'POST':
         key = request.form['key']
         value = request.form['value']
-        type = request.form['type']
+        cmd_type = request.form['type']
 
-        command = Commands(name=key, command=value, device_id=id, type=type)
+        command = Commands(name=key, command=value, device_id=id, cmd_type=cmd_type)
         
         try:
             db.session.add(command)
@@ -180,7 +184,7 @@ def command_edit(id, command_id):
     if request.method == 'POST':
         command.name = request.form['key']
         command.command = request.form['value']
-        command.type = request.form['type']
+        command.cmd_type = request.form['type']
         
         try:
             db.session.commit()
@@ -222,22 +226,50 @@ def device_delete(id):
 def device_use(id):
     name = Devices.query.get(id).name
     commands = Commands.query.filter_by(device_id=id).all()
-    if request.method == 'POST':
+    
+    if request.method == 'POST':        
         for data in request.form:
-            if '/' in data:
+            if '----' in data:
                 data = data.split('----')
-                command = data[0]
+                cmd = data[0]
                 device_id = data[1]
+                # print(cmd, device_id)
                 ip = Devices.query.filter_by(id=device_id).first().ip
-                requests.get(f'http://{ip}{command}')
-
-        
+                try:
+                    requests.get(f'http://{ip}{cmd}')
+                except:
+                    return 'Не удалось подключиться к устройству'
+            
+            elif '||||' in data:
+                data = data.split('||||')
+                cmd = data[0]
+                device_id = data[1]
+                time = int(request.form[f'{cmd}||||{device_id}'])
+                time = time * 60
+                # print(cmd, device_id, time)
+                ip = Devices.query.filter_by(id=device_id).first().ip
+                
+                asyncio.run(request_cmd(ip, cmd, time_await=time))
+                
+                # t = Thread(target=request_cmd, args=(ip, cmd, time,))
+                # t.start()
+                
+                # loop = asyncio.new_event_loop()
+                # Timer(time, loop.run_until_complete, (request_cmd(ip, cmd),)).start()
+                
+            
         return render_template('use.html', commands=commands, name=name)
     else:
         return render_template('use.html', commands=commands, name=name)
     
-    
 
+
+async def request_cmd(ip, cmd, time_await):
+    await asyncio.sleep(time_await)
+    try:
+        requests.get(f'http://{ip}{cmd}')
+    except:
+        return 'Не удалось подключиться к устройству'
 
         
 # @app.route('/settings', methods=['GET', 'POST'])
@@ -282,8 +314,29 @@ def login_page():
         return render_template('login.html')
 
 
+
+@app.route('/login-app')
+def login_page_app():
+    login = request.args.get('login')
+    password = request.args.get('password')
+    
+    if login and password:
+        user = Users.query.filter_by(username=login).first()
+        if user and check_password_hash(user.password, password):
+            login_user(user, remember=True)
+            # next_page = request.args.get('next')
+            
+            return redirect('/')
+        else:
+            return 'Неверные логин или пароль'
+    else:
+        return 'Пожалуйста заполните все поля'
+
+
+
+
 @app.route('/register', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def register_page():
     if request.method == 'POST':
         username = request.form['login']

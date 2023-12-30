@@ -2,6 +2,7 @@ import sys
 sys.path.append(r'../')
 import tts
 import config
+from additions import *
 from plugins.plugin_gpt import history
 
 import g4f
@@ -17,18 +18,19 @@ def main(cmd, text):
 
 def dialog(cmd, text):
     question = text.replace('придумай ', '')
-    
-    if question == 'хватит':
+    if question == 'хватит ':
         history.history = []
         config.use_plugin = None
         return
     
     else:
-        history.history.append({"role": "user", "content": question})
-        print(history.history)
-        response = ask(history.history)
-        history.history.append({"role": "assistant", "content": response})
-        print(response)
+        try:
+            history.history.append({"role": "user", "content": question})
+            response = ask(history.history)
+            history.history.append({"role": "assistant", "content": response})
+            print_text(response)
+        except:
+            response = "Ошибка генерации ответа"
         tts.va_speak(response)
     
 
@@ -43,10 +45,10 @@ def ask(message: str) -> str:
          
     except requests.exceptions.RequestException as e:
         # if e.status_code == 403:
-        print(f"Ошибка ответа сервера: \n{e}")
+        print_error(f"Ошибка ответа сервера: \n{e}")
         return "Ошибка ответа сервера"
         
     except Exception as e:
-        print(f"Ошибка генерации ответа: \n{e}")
+        print_error(f"Ошибка генерации ответа: \n{e}")
         return "Ошибка генерации ответа"
     

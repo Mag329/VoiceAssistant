@@ -4,16 +4,18 @@ import sounddevice as sd
 import queue
 import json
 
+from additions import *
+
 
 model = vosk.Model("model")
 samplerate = 16000
-device = 0
+device = "hw:2,0"
 
 q = queue.Queue()
 
 def q_callback(indata, frames, time, status):
     if status:
-        print(status, file=sys.stderr)
+        print_text(status, file=sys.stderr)
     q.put(bytes(indata))
     
     
@@ -26,4 +28,4 @@ def va_listen(callback):
             if rec.AcceptWaveform(data):
                 callback(json.loads(rec.Result())["text"])
             # else:
-            #     print(rec.PartialResult())
+            #     print_text(rec.PartialResult())
