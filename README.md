@@ -36,6 +36,9 @@ python3 main.py
 
 <br>
 
+Код распознования команд взят из [видео Хауди Хо](https://www.youtube.com/watch?v=XTeGvaDaraI)
+Реализация таймера взята из [голосового ассистента Ирина](https://github.com/janvarev/Irene-Voice-Assistant) от janvarev
+
 ### Использовано
 ![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge)  
 ![Flask](https://img.shields.io/badge/Flask-lightgray?style=for-the-badge)  
