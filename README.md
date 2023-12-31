@@ -12,6 +12,7 @@
 | Список покупок | Да |
 | Радио | Нет |
 | Сценарии умныго дома | Нет |  
+<br>
 [Доска Weeek](https://app.weeek.net/ws/490187/shared/board/MWJjBgMaJ1wmItv4FBOIdlRoU5UwLRVt)
 <br>
 
