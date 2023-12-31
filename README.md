@@ -11,8 +11,8 @@
 | Управление через Telegram бота | Нет |
 | Список покупок | Да |
 | Радио | Нет |
-| Сценарии умныго дома | Нет |
-
+| Сценарии умныго дома | Нет |  
+[Доска Weeek](https://app.weeek.net/ws/490187/shared/board/MWJjBgMaJ1wmItv4FBOIdlRoU5UwLRVt)
 <br>
 
 ### Установка
