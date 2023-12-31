@@ -36,8 +36,9 @@ python3 main.py
 
 <br>
 
-Код распознования команд взят из [видео Хауди Хо](https://www.youtube.com/watch?v=XTeGvaDaraI)
-Реализация таймера взята из [голосового ассистента Ирина](https://github.com/janvarev/Irene-Voice-Assistant) от janvarev  
+Код распознования команд взят из [видео Хауди Хо](https://www.youtube.com/watch?v=XTeGvaDaraI)  
+Реализация таймера взята из [голосового ассистента Ирина](https://github.com/janvarev/Irene-Voice-Assistant) от janvarev
+Некоторые идеи позаимствованы из голосового ассистента [Ирина](https://github.com/janvarev/Irene-Voice-Assistant) и [Васисуалий](https://github.com/Oknolaz/vasisualy/tree/master)  
 
 ### Использовано
 ![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge)  
