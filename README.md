@@ -9,7 +9,11 @@
 | Установка таймера | Да |
 | Навык рандома | Да |
 | Управление через Telegram бота | Нет |
-
+| Список покупок | Да |
+| Радио | Нет |
+| Сценарии умныго дома | Нет |
+  
+[Доска Weeek](https://app.weeek.net/ws/490187/shared/board/MWJjBgMaJ1wmItv4FBOIdlRoU5UwLRVt)
 <br>
 
 ### Установка
@@ -32,6 +36,10 @@ python3 main.py
 ```
 
 <br>
+
+Код распознования команд взят из [видео Хауди Хо](https://www.youtube.com/watch?v=XTeGvaDaraI)  
+Реализация таймера взята из [голосового ассистента Ирина](https://github.com/janvarev/Irene-Voice-Assistant) от janvarev  
+Некоторые идеи позаимствованы из голосового ассистента [Ирина](https://github.com/janvarev/Irene-Voice-Assistant) и [Васисуалий](https://github.com/Oknolaz/vasisualy/tree/master)  
 
 ### Использовано
 ![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge)  
