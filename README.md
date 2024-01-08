@@ -19,7 +19,7 @@
 ### Установка
 1. Клонирование репозитория
 ```
-git clone https://github.com/Mag329/VoiceAssistant_RUTTS.git
+git clone https://github.com/Mag329/VoiceAssistant.git
 ```
 2. Установка зависимостей
 ```
