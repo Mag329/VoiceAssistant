@@ -28,7 +28,7 @@ def va_respond(voice):
     
 
 async def va_respond_async(voice: str):
-    voice = input()
+    # voice = input()
     if voice != '':
         if voice.startswith(config.VA_ALIAS) or config.is_active:
             voice = filter_cmd(voice)
