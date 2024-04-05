@@ -1,4 +1,5 @@
 <h1 align='center'>VoiceAssistant</h1>
+[![wakatime](https://wakatime.com/badge/user/018b919c-8ec9-4a53-9254-f550cb396443/project/018c0813-2927-41c0-862d-560c383ca0f8.svg)](https://wakatime.com/badge/user/018b919c-8ec9-4a53-9254-f550cb396443/project/018c0813-2927-41c0-862d-560c383ca0f8)
 <h2 align='center'>Голосовой ассистент на Python</h2>
 
 ### Что реализовано
