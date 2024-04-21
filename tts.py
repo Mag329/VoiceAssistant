@@ -1,46 +1,44 @@
-from RUTTS import TTS
-import sounddevice as sd
-from ruaccent import RUAccent
+from speakerpy.lib_speak import Speaker
+from speakerpy.lib_sl_text import SeleroText
+import time
 import json
+
 import config
-
 from additions import *
-import plugins 
+import plugins
 
 
-model = 'TeraTTS/natasha-g2p-vits'
+language = "ru"
+model_id = "ru_v3"
+sample_rate = 48000
+speaker = "baya"  # aidar, baya, kseniya, xenia, random
+put_accent = True
+put_yoo = True
+device = "cpu"
 
-tts = TTS(model, add_time_to_end=0.8) 
 
-accentizer = RUAccent()
-accentizer.load(omograph_model_size='big_poetry', use_dictionary=True)
-
-with open('config.json') as file:
+with open("config.json") as file:
     data = json.load(file)
-    volume = data['main']['volume']
-    
+    volume = data["main"]["volume"]
+
 
 # Text to Speech
 def va_speak(what: str):
-    what = ' ' + what + ' ..'
+    speaker = Speaker(
+        model_id=model_id, language=language, speaker="baya", device=device
+    )
+    # time.sleep(len(audio) / sample_rate + 1)
+    speaker.speak(what, sample_rate=sample_rate, put_accent=put_accent, put_yo=put_yoo)
 
-    what = accentizer.process_all(what)
-    
-    audio = tts(what, lenght_scale=1.6)
-    # tts.play_audio(audio)
-    audio = audio * volume
-    config.player = 'Play' 
-    sd.play(audio, 24000)
-    
 
 def set_volume(new_volume: int):
     global volume
-    if config.use_plugin == 'radio':
+    if config.use_plugin == "radio":
         plugins.plugin_radio.main.set_volume(new_volume)
     volume = new_volume
-    with open('config.json') as load_file:
+    with open("config.json") as load_file:
         data = json.load(load_file)
-        data['main']['volume'] = volume
-        with open('config.json', 'w') as file:
+        data["main"]["volume"] = volume
+        with open("config.json", "w") as file:
             json.dump(data, file)
     print_text(volume)

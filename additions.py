@@ -4,15 +4,34 @@ import datetime
 
 console = Console()
 
-def print_text(text1, text2='', text3='', text4='', text5=''):
-    now = datetime.datetime.now()
-    console.print(f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [green]{text1} {text2} {text3} {text4} {text5}[/green]')
 
-    
-def print_error(text):
+def print_text(*args):
+    text = ""
+    for i in args:
+        if i != args[-1]:
+            text += f"{i}, "
+        else:
+            text += f"{i}"
+
     now = datetime.datetime.now()
-    console.print(f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [red][bold]ERROR:[/bold] {text}[/red]')
-    
-    
+    console.print(
+        f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [green]{text}[/green]'
+    )
+
+
+def print_error(*args):
+    text = ""
+    for i in args:
+        if i != args[-1]:
+            text += f"{i}, "
+        else:
+            text += f"{i}"
+
+    now = datetime.datetime.now()
+    console.print(
+        f'[bold blue]{now.strftime("%Y-%m-%d %H:%M:%S")}:[/bold blue] [red][bold]ERROR:[/bold] {text}[/red]'
+    )
+
+
 def print_multiline_text(text):
     console.print(text)

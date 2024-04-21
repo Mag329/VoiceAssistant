@@ -12,7 +12,6 @@ def make_row_keyboard(items: list[str]) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(keyboard=[row], resize_keyboard=True)
 
 
-
 class Control(StatesGroup):
     choice_device_name = State()
     choice_device_func = State()

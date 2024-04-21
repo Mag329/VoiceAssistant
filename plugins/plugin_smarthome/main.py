@@ -1,27 +1,29 @@
 import sys
-sys.path.append(r'../')
+
+sys.path.append(r"../")
 from plugins.plugin_smarthome.smarthome import *
 from additions import *
 
 import pymorphy3
 
 
-morph = pymorphy3.MorphAnalyzer(lang='ru')
+morph = pymorphy3.MorphAnalyzer(lang="ru")
+
 
 def main(cmd, text):
     appliance = recognize_appliance(text)
-    
+
     for word in text.split():
         if word in CMD_ON:
-            cmd = 'on'
+            cmd = "on"
         elif word in CMD_OFF:
-            cmd = 'off'
-    
-    if appliance['type'] == 'device':
-        appliance = appliance['device']
-        
+            cmd = "off"
+
+    if appliance["type"] == "device":
+        appliance = appliance["device"]
+
         # ip = Devices.query.filter_by(name=appliance).first().ip
-        
+
         devices_db = Devices.query.filter().all()
         for device_db in devices_db:
             if device_db.name.lower() == appliance:
@@ -30,14 +32,13 @@ def main(cmd, text):
                 work_with_device(appliance, cmd, ip)
             else:
                 continue
-            
-        
-    elif appliance['type'] == 'command':
-        host = appliance['host']
+
+    elif appliance["type"] == "command":
+        host = appliance["host"]
         host = morph.parse(host)[0]
         host = host.normal_form
-        device = appliance['device']
-        
+        device = appliance["device"]
+
         devices_db = Devices.query.filter().all()
         for device_db in devices_db:
             if device_db.name.lower() == host:
