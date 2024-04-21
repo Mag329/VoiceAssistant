@@ -19,6 +19,8 @@ def main(cmd, text):
 
     text = new_text
 
+    type = ""
+        
     for word in text.split():
         if word in GREETINGS:
             type = "hello"
@@ -26,9 +28,6 @@ def main(cmd, text):
         else:
             type = "other"
             break
-
-    print_text(text)
-    print_text(type)
 
     if type == "hello":
         for word in text.split():

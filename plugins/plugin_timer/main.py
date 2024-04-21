@@ -1,15 +1,13 @@
 import sys
-
 sys.path.append(r"../")
+
+import asyncio
+from num2words import num2words
+from threading import Timer
+
 import tts
 from additions import *
 
-import time
-import asyncio
-import os
-import soundfile as sf
-from num2words import num2words
-from threading import Timer
 
 female_units_min2 = (("минуту", "минуты", "минут"), "f")
 female_units_min = (("минута", "минуты", "минут"), "f")
@@ -17,11 +15,8 @@ female_units_sec2 = (("секунду", "секунды", "секунд"), "f")
 female_units_sec = (("секунда", "секунды", "секунд"), "f")
 # female_units_uni = ((u'', u'', u''), 'f')
 
-finish_sound = "finish.mp3"
+finish_sound = "plugins/plugin_timer/finish.mp3"
 
-finish_sound = f"plugins/plugin_timer/{finish_sound}"
-
-array, smp_rt = sf.read(finish_sound, dtype="float32")
 
 
 def main(cmd, phrase: str):
@@ -102,15 +97,15 @@ def main(cmd, phrase: str):
 
 
 def set_timer_real(num: int):
-    tts.va_speak(f"время пошло")
+    tts.va_speak("время пошло")
     loop = asyncio.new_event_loop()
     Timer(num, loop.run_until_complete, (set_timer(num),)).start()
     # asyncio.run(set_timer(num))
 
 
 def after_timer():
-    tts.sd.play(array, smp_rt)
-    time.sleep(len(array) / smp_rt)
+    tts.play_audio(finish_sound)
+    # time.sleep(len(array) / smp_rt)
     tts.va_speak("Время вышло")
     return
 

@@ -63,7 +63,7 @@ def main(cmd, text):
 
     station_num = random.randint(1, len(stations))
 
-    text = text.replace("радио ", "")
+    # text = text.replace("радио ", "")
     print_text(text)
     play_radio("play", player)
 

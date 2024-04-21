@@ -1,4 +1,4 @@
-CMD_NAMES = ("повтори", "передай")
+CMD_NAMES = ("повтори", "передай", "скажи")
 author = "Mag329"
 version = "1.0"
 request_online = False

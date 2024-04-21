@@ -3,6 +3,9 @@ from speakerpy.lib_sl_text import SeleroText
 import time
 import json
 
+import sounddevice as sd
+import soundfile as sf
+
 import config
 from additions import *
 import plugins
@@ -20,6 +23,16 @@ device = "cpu"
 with open("config.json") as file:
     data = json.load(file)
     volume = data["main"]["volume"]
+
+
+def play_audio(file_path):
+    # Загрузка аудиофайла
+    data, sample_rate = sf.read(file_path)
+    # Изменение громкости
+    adjusted_data = data * volume
+    # Воспроизведение
+    sd.play(adjusted_data, sample_rate)
+    sd.wait()
 
 
 # Text to Speech
